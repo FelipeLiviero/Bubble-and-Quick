@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string> 
 #include <time.h>
+
+using namespace std;
 
 typedef struct {
     char nome_prato[50];
@@ -60,13 +63,22 @@ void criar_pratos(Prato* pratos, int n, const char palavras[][20], int total_pal
 
         string nome = string(palavras[idx1]) + " " + string(palavras[idx2]) + " " + string(palavras[idx3]);
 
+                                        // c_str foi usado pois a funcao precisava de um const char
         strncpy(pratos[i].nome_prato, nome.c_str(), sizeof(pratos[i].nome_prato) - 1); // STRNCPY evita problemas de estouro de buffer
-        pratos[i].nome_prato[sizeof(pratos[i].nome_prato) - 1] = '\0'; 
+        pratos[i].nome_prato[sizeof(pratos[i].nome_prato) - 1] = '\0';
 
         pratos[i].prioridade = rand() % 10 + 1;        // Prioridade de 1 a 10
         pratos[i].tempo_preparo = rand() % 60 + 1;     // Tempo de preparo de 1 a 60 minutos
     }
 }
 
+void embaralhar(Prato* pratos, int total_pratos) {
+    for (int i = total_pratos - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        Prato temp = pratos[i];
+        pratos[i] = pratos[j];
+        pratos[j] = temp;
+    }
+}
 
 #endif
